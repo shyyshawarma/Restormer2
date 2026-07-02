@@ -20,6 +20,7 @@ from basicsr.utils.options import dict2str, parse
 
 import numpy as np
 
+
 def parse_options(is_train=True):
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -29,9 +30,10 @@ def parse_options(is_train=True):
         choices=['none', 'pytorch', 'slurm'],
         default='none',
         help='job launcher')
-    parser.add_argument('--local_rank', type=int, default=0)
+    parser.add_argument('--local_rank', '--local-rank', type=int, default=0)
     args = parser.parse_args()
     opt = parse(args.opt, is_train=is_train)
+
 
     # distributed settings
     if args.launcher == 'none':
