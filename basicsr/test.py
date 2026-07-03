@@ -1,6 +1,9 @@
 import logging
+import sys
 import torch
 from os import path as osp
+
+sys.path.append(osp.abspath(osp.join(osp.dirname(__file__), '..')))
 
 from basicsr.data import create_dataloader, create_dataset
 from basicsr.models import create_model
