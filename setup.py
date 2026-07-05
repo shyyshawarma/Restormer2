@@ -6,15 +6,9 @@ import os
 import subprocess
 import sys
 import time
-try:
-    import torch
-    from torch.utils.cpp_extension import (BuildExtension, CppExtension,
-                                           CUDAExtension)
-except ImportError:
-    BuildExtension = None
-    CppExtension = None
-    CUDAExtension = None
-
+import torch
+from torch.utils.cpp_extension import (BuildExtension, CppExtension,
+                                       CUDAExtension)
 
 version_file = 'basicsr/version.py'
 
@@ -99,9 +93,6 @@ def make_cuda_ext(name, module, sources, sources_cuda=None):
     define_macros = []
     extra_compile_args = {'cxx': []}
 
-    if BuildExtension is None:
-        raise ImportError("PyTorch/CUDA extension tools are not installed.")
-
     if torch.cuda.is_available() or os.getenv('FORCE_CUDA', '0') == '1':
         define_macros += [('WITH_CUDA', None)]
         extension = CUDAExtension
@@ -157,8 +148,8 @@ if __name__ == '__main__':
             'Programming Language :: Python :: 3.8',
         ],
         license='Apache License 2.0',
-        setup_requires=[],
+        setup_requires=['cython', 'numpy'],
         install_requires=get_requirements(),
         ext_modules=ext_modules,
-        cmdclass={'build_ext': BuildExtension} if BuildExtension is not None else {},
+        cmdclass={'build_ext': BuildExtension},
         zip_safe=False)
